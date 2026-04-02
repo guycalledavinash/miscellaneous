@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Generic E-Commerce App</title>
+  <link rel="stylesheet" href="/css/styles.css" />
+</head>
+<body>
+  <header>
+    <h1>Codex Shop</h1>
+    <div id="cart-indicator">Cart: <span id="cart-count">0</span></div>
+  </header>
+
+  <section class="controls">
+    <input type="text" id="search" placeholder="Search products..." />
+
+    <select id="category">
+      <option value="all">All Categories</option>
+      <option value="Electronics">Electronics</option>
+      <option value="Accessories">Accessories</option>
+      <option value="Footwear">Footwear</option>
+      <option value="Apparel">Apparel</option>
+      <option value="Home">Home</option>
+    </select>
+
+    <select id="sort">
+      <option value="default">Sort By</option>
+      <option value="price_asc">Price: Low to High</option>
+      <option value="price_desc">Price: High to Low</option>
+      <option value="rating_desc">Top Rated</option>
+    </select>
+  </section>
+
+  <main>
+    <div id="product-grid" class="product-grid">
+      <% products.forEach((product) => { %>
+        <article class="product-card" data-id="<%= product.id %>">
+          <img src="<%= product.image %>" alt="<%= product.name %>" loading="lazy" />
+          <h3><%= product.name %></h3>
+          <p><%= product.category %></p>
+          <p>⭐ <%= product.rating %></p>
+          <p class="price">$<%= product.price.toFixed(2) %></p>
+          <button class="add-to-cart" data-id="<%= product.id %>">Add to Cart</button>
+        </article>
+      <% }); %>
+    </div>
+  </main>
+
+  <script>
+    window.__INITIAL_PRODUCTS__ = <%- JSON.stringify(products) %>;
+  </script>
+  <script src="/js/app.js"></script>
+</body>
+</html>
