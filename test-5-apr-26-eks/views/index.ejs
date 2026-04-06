@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dynamic EKS Demo App</title>
+    <link rel="stylesheet" href="/public/style.css" />
+  </head>
+  <body>
+    <main class="card">
+      <h1><%= greeting %> 👋</h1>
+      <p>This is a dynamic Node.js + Express web application.</p>
+      <p><strong>Server time:</strong> <code><%= serverTime %></code></p>
+      <p><strong>Total page views (since container start):</strong> <%= totalPageViews %></p>
+
+      <section>
+        <h2>Random quote API</h2>
+        <button id="fetch-quote">Fetch Quote</button>
+        <blockquote id="quote-result">Click the button to load a quote.</blockquote>
+      </section>
+    </main>
+
+    <script>
+      const button = document.getElementById('fetch-quote');
+      const quoteResult = document.getElementById('quote-result');
+
+      button.addEventListener('click', async () => {
+        quoteResult.textContent = 'Loading...';
+
+        try {
+          const response = await fetch('/api/quote');
+          const data = await response.json();
+          quoteResult.textContent = `${data.quote} (${data.servedAt})`;
+        } catch (error) {
+          quoteResult.textContent = 'Failed to load quote.';
+        }
+      });
+    </script>
+  </body>
+</html>
