@@ -1,0 +1,1 @@
+-- PostgreSQL initialization hook; schema is managed by Alembic migrations.

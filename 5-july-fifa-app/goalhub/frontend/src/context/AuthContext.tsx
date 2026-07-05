@@ -1,0 +1,3 @@
+import {createContext,useContext,useMemo,useState} from 'react';
+type Auth={token:string|null;setToken:(t:string|null)=>void;logout:()=>void};
+const C=createContext<Auth|null>(null); export function AuthProvider({children}:{children:React.ReactNode}){const [token,setTokenState]=useState(localStorage.getItem('token')); const setToken=(t:string|null)=>{t?localStorage.setItem('token',t):localStorage.removeItem('token');setTokenState(t)}; const value=useMemo(()=>({token,setToken,logout:()=>setToken(null)}),[token]); return <C.Provider value={value}>{children}</C.Provider>}; export const useAuth=()=>{const v=useContext(C); if(!v) throw new Error('AuthProvider missing'); return v};
