@@ -1,0 +1,47 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: goalhub
+      POSTGRES_USER: goalhub
+      POSTGRES_PASSWORD: goalhub
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks: [goalhub]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U goalhub -d goalhub"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+  backend:
+    build: ./backend
+    environment:
+      DATABASE_URL: postgresql+psycopg://goalhub:goalhub@postgres:5432/goalhub
+      JWT_SECRET_KEY: replace-with-secure-secret
+      CORS_ORIGINS: '["http://localhost:3000"]'
+    depends_on:
+      postgres:
+        condition: service_healthy
+    command: sh -c "alembic upgrade head && python scripts/seed.py && uvicorn app.main:app --host 0.0.0.0 --port 8000"
+    ports: ["8000:8000"]
+    networks: [goalhub]
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+    restart: unless-stopped
+  frontend:
+    build: ./frontend
+    depends_on:
+      backend:
+        condition: service_healthy
+    ports: ["3000:80"]
+    networks: [goalhub]
+    restart: unless-stopped
+volumes:
+  postgres_data:
+networks:
+  goalhub:
+    driver: bridge

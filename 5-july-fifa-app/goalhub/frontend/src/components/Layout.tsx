@@ -1,0 +1,5 @@
+import {Dashboard,Groups,SportsSoccer,Insights,Logout} from '@mui/icons-material';
+import {AppBar,Box,CssBaseline,Divider,Drawer,IconButton,List,ListItemButton,ListItemIcon,ListItemText,Toolbar,Typography} from '@mui/material';
+import {Link,Outlet} from 'react-router-dom'; import {useAuth} from '../context/AuthContext';
+const links=[['/','Dashboard',<Dashboard/>],['/players','Players',<SportsSoccer/>],['/teams','Teams',<Groups/>],['/matches','Matches',<SportsSoccer/>],['/analytics','Analytics',<Insights/>]] as const;
+export function Layout(){const {logout}=useAuth(); return <Box sx={{display:'flex'}}><CssBaseline/><AppBar position="fixed" sx={{zIndex:1201}}><Toolbar><Typography variant="h6" sx={{flexGrow:1}}>GoalHub</Typography><IconButton color="inherit" onClick={logout}><Logout/></IconButton></Toolbar></AppBar><Drawer variant="permanent" sx={{width:240,'& .MuiDrawer-paper':{width:240}}}><Toolbar/><Divider/><List>{links.map(([to,text,icon])=><ListItemButton component={Link} to={to} key={to}><ListItemIcon>{icon}</ListItemIcon><ListItemText primary={text}/></ListItemButton>)}</List></Drawer><Box component="main" sx={{flexGrow:1,p:3,mt:8}}><Outlet/></Box></Box>}

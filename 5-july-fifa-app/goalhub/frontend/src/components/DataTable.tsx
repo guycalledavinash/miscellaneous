@@ -1,0 +1,2 @@
+import {Paper,Table,TableBody,TableCell,TableContainer,TableHead,TableRow} from '@mui/material';
+export function DataTable<T extends Record<string, unknown>>({rows,columns}:{rows:T[];columns:(keyof T)[]}){return <TableContainer component={Paper}><Table size="small"><TableHead><TableRow>{columns.map(c=><TableCell key={String(c)}>{String(c)}</TableCell>)}</TableRow></TableHead><TableBody>{rows.map((r,i)=><TableRow key={i}>{columns.map(c=><TableCell key={String(c)}>{String(r[c]??'')}</TableCell>)}</TableRow>)}</TableBody></Table></TableContainer>}

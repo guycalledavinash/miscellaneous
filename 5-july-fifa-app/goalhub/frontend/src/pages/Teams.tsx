@@ -1,0 +1,2 @@
+import {Typography} from '@mui/material'; import {useEffect,useState} from 'react'; import {api} from '../api/client'; import {DataTable} from '../components/DataTable'; import {Team} from '../types/domain';
+export default function Teams(){const [rows,setRows]=useState<Team[]>([]); useEffect(()=>{api.get('/teams').then(r=>setRows(r.data))},[]); return <><Typography variant="h4" gutterBottom>Team Rankings</Typography><DataTable rows={rows as unknown as Record<string,unknown>[]} columns={['id','name','country','coach','fifa_ranking']}/></>}
