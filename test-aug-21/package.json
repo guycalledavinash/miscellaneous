@@ -1,0 +1,1 @@
+{"name":"test-aug-21","version":"1.0.0","type":"module","scripts":{"dev":"node --watch server/index.js","start":"node server/index.js","check":"node --check server/index.js && node --check public/app.js"},"dependencies":{"express":"^4.19.2"}}
